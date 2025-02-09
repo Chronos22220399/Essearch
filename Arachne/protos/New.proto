@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message New {
+  uint32 new_id = 1;
+  string title = 2;
+  string author_photor = 3;
+  string referring = 4;
+  string source = 5;
+  uint32 clicked_cnt = 6;
+  string editor = 7;
+  string content = 8;
+}
