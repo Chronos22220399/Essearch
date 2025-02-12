@@ -28,27 +28,28 @@ std::vector<std::string> URLGetter::get_all_page_links() {
 // 获取新闻的 url
 std::vector<std::string> URLGetter::get_new_url() {
   auto links = get_all_page_links();
-  // std::vector<std::string> ret(links.size() * 12);
-  std::vector<std::string> ret;
+  std::vector<std::string> ret(1200);
   size_t cnt = 0;
   try {
     std::vector<std::thread> pool;
     std::vector<std::vector<std::string>> htmls_content(8);
+
     size_t num = (links.size() + 7) / 8;
     for (size_t i = 0; i < 8; ++i) {
       size_t start = i * num;
       size_t end = std::min((i + 1) * num, links.size());
       pool.emplace_back(
           [start, end, i, &htmls_content, &links, this, cnt]() mutable {
-            HTMLParser parser(logger);
+            // HTMLParser parser(logger);
             httplib::Client cli(domain);
             while (start < end) {
               auto res = cli.Get(links[start]);
               check_http_result(res, logger);
               std::string body = res->body;
-              auto new_urls = parser.parse_new_url(body);
-              htmls_content[i].insert(htmls_content[i].end(), new_urls.begin(),
-                                      new_urls.end());
+              // auto new_urls = parser.parse_new_url(body);
+              // htmls_content[i].insert(htmls_content[i].end(),
+              // new_urls.begin(),
+              //                         new_urls.end());
               cnt += htmls_content.size();
               start += 1;
             }

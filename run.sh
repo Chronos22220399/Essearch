@@ -1,5 +1,4 @@
 #!/bin/fish
 
-cmake -B build -DGumbo_static_LIBRARY=/usr/lib/libgumbo.so
-cmake --build build
-build/Arachne/Arachne
+cmake -B build -G Ninja -DGumbo_static_LIBRARY=/usr/lib/libgumbo.so
+ninja -C build

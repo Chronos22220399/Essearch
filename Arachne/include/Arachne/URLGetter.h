@@ -1,8 +1,8 @@
 #pragma once
-#include <Arachne/HTMLParser.h>
 #include <Document.h>
 #include <Node.h>
 #include <httplib.h>
+#include <queue>
 #include <spdlog/spdlog.h>
 
 namespace Arachne {
@@ -24,5 +24,6 @@ private:
   std::shared_ptr<spdlog::logger> logger;
   const std::string domain = "https://news.hbut.edu.cn";
 };
+// TODO: 构建一个 url 队列，URLGetter 返回该队列
 
 } // namespace Arachne

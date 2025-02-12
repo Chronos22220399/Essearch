@@ -13,10 +13,20 @@
 			"expression" : "/home/Ess/Desktop/Essearch/Arachne/include/*.h",
 			"paths" : 
 			[
-				"/home/Ess/Desktop/Essearch/Arachne/include/Arachne/ContentParser.h",
-				"/home/Ess/Desktop/Essearch/Arachne/include/Arachne/HTMLParser.h",
+				"/home/Ess/Desktop/Essearch/Arachne/include/Arachne/NewDeleter.h",
+				"/home/Ess/Desktop/Essearch/Arachne/include/Arachne/NewGetter.h",
+				"/home/Ess/Desktop/Essearch/Arachne/include/Arachne/NewParser.h",
+				"/home/Ess/Desktop/Essearch/Arachne/include/Arachne/NewSaver.h",
 				"/home/Ess/Desktop/Essearch/Arachne/include/Arachne/URLGetter.h",
 				"/home/Ess/Desktop/Essearch/Arachne/include/Arachne/Utils.h"
+			],
+			"recurse" : true
+		},
+		{
+			"expression" : "/home/Ess/Desktop/Essearch/Arachne/include/*.hpp",
+			"paths" : 
+			[
+				"/home/Ess/Desktop/Essearch/Arachne/include/Arachne/Autils.hpp"
 			],
 			"recurse" : true
 		},
@@ -24,7 +34,9 @@
 			"expression" : "/home/Ess/Desktop/Essearch/Arachne/src/*.cpp",
 			"paths" : 
 			[
-				"/home/Ess/Desktop/Essearch/Arachne/src/HTMLParser.cpp",
+				"/home/Ess/Desktop/Essearch/Arachne/src/NewDeleter.cpp",
+				"/home/Ess/Desktop/Essearch/Arachne/src/NewParser.cpp",
+				"/home/Ess/Desktop/Essearch/Arachne/src/NewSaver.cpp",
 				"/home/Ess/Desktop/Essearch/Arachne/src/URLGetter.cpp",
 				"/home/Ess/Desktop/Essearch/Arachne/src/main.cpp"
 			],
@@ -156,6 +168,36 @@
 		},
 		{
 			"path" : "Arachne/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/FindSQLite3.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/FindPkgConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/FindPackageMessage.cmake"
 		},
 		{
 			"path" : "Arachne/cmake/GumboQueryConfig.cmake"
@@ -336,6 +378,92 @@
 		{
 			"isExternal" : true,
 			"path" : "/usr/lib/cmake/fmt/fmt-targets-none.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/lib/cmake/httplib/httplibConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/lib/cmake/httplib/httplibConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/lib/cmake/httplib/httplibTargets.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/lib/cmake/Sqlpp11/Sqlpp11ConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/lib/cmake/Sqlpp11/Sqlpp11Config.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/lib/cmake/date/dateConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/lib/cmake/date/dateConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/lib/cmake/date/dateTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/usr/local/lib/cmake/Sqlpp11/Sqlpp11Targets.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/FindICU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/SelectLibraryConfigurations.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/SelectLibraryConfigurations.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/SelectLibraryConfigurations.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/usr/share/cmake/Modules/FindPackageMessage.cmake"
 		}
 	],
 	"kind" : "cmakeFiles",
