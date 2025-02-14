@@ -33,4 +33,4 @@ def generate_sqlite3_by_ddl(src_file_name: str):
 if __name__ == "__main__":
     db_dir.mkdir(parents=True, exist_ok=True)
     include_dir.mkdir(parents=True, exist_ok=True)
-    generate_sqlite3_by_ddl("news")
+    generate_sqlite3_by_ddl("new")

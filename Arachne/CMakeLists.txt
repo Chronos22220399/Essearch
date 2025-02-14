@@ -28,6 +28,7 @@ find_package(fmt REQUIRED)
 find_package(httplib REQUIRED)
 find_package(Sqlpp11 REQUIRED)
 find_package(ICU REQUIRED COMPONENTS uc i18n io)
+find_package(TBB REQUIRED)
 
 add_executable(${PROJECT_NAME} ${srcs})
 
@@ -35,6 +36,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE httplib::httplib)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${gumbo_query_LIB})
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${ICU_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE TBB::tbb)
 
 target_include_directories(${PROJECT_NAME} PUBLIC include
                                                   ${gumbo_query_INCLUDE_DIR})

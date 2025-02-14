@@ -1,10 +1,11 @@
 #include <Arachne/NewParser.h>
+
 namespace Arachne {
 
 using get_result = std::tuple<std::string, size_t>;
 
 std::string NewParser::get_title() {
-  return strip(doc.find("h1.te_c").nodeAt(0).text());
+  return Autils::strip(doc.find("h1.te_c").nodeAt(0).text());
 }
 
 get_result NewParser::get_info(const std::string &info,
@@ -13,7 +14,7 @@ get_result NewParser::get_info(const std::string &info,
   size_t begin = info.find(search_content, end) + 3;
   size_t c_end = info.find(" ", begin);
   auto checker = info.substr(begin, c_end - begin);
-  return {strip(checker), c_end};
+  return {Autils::strip(checker), c_end};
 }
 
 std::string NewParser::get_content() {
@@ -31,7 +32,7 @@ std::string NewParser::get_content() {
       content_items += (i == 0 ? "" : "\r\n") + node.text();
     }
   }
-  return strip(content_items);
+  return Autils::strip(content_items);
 }
 
 std::string NewParser::get_editor() {
@@ -39,34 +40,34 @@ std::string NewParser::get_editor() {
   size_t begin = editor.find("：") + 3;
   size_t end = editor.find(" ", begin);
   editor = editor.substr(begin, end - begin);
-  return strip(editor);
+  return Autils::strip(editor);
 }
 
 NewParser::New NewParser::parse(std::string html_body, const std::string &url) {
   doc.parse(html_body);
   auto title = get_title();
   fmt::println("{}", title);
-  auto new_info = strip(doc.find("div.info.te_c div").nodeAt(0).text());
+  auto new_info = Autils::strip(doc.find("div.info.te_c div").nodeAt(0).text());
 
   // 获取作者/摄影
   auto author_photor = get_info(new_info, "：", 0);
-  LOG(std::get<0>(author_photor));
+  LOG("{}", std::get<0>(author_photor));
 
   // 获取审稿
   auto checker = get_info(new_info, "：", std::get<1>(author_photor));
-  fmt::println("{}", std::get<0>(checker));
+  LOG("{}", std::get<0>(checker));
 
   // 获取出处
   auto source = get_info(new_info, "：", std::get<1>(checker));
-  fmt::println("{}", std::get<0>(source));
+  LOG("{}", std::get<0>(source));
 
   // 获取内容
   auto content = get_content();
-  fmt::println("{}", content);
+  LOG("{}", content);
 
   // 获取编辑
   auto editor = get_editor();
-  fmt::println("{}", editor);
+  LOG("{}", editor);
 
   return New{.newId = 0,
              .title = title,

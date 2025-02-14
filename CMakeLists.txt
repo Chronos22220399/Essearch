@@ -14,3 +14,5 @@ project(
   VERSION 1.0)
 
 add_subdirectory(Arachne)
+
+add_compile_options(-g)
