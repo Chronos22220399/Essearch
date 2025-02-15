@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+enum SearchMode {
+  Normal = 0;
+  Advanced = 1;
+}
+
+message SearchRequest {
+  SearchMode mode = 1;
+  string content = 2;
+}
+
+message SearchResponse {
+  repeated int32 docIds = 1;
+}
+
+message GetNewsRequest {
+  repeated int32 docIds = 1;
+}
+
+message GetNewsResponse {
+  repeated string news = 1; // 这里补上字段名
+}
+
+service SearchService {
+  rpc Search(SearchRequest) returns (SearchResponse);
+  rpc GetNews(stream GetNewsRequest) returns (stream GetNewsResponse); // 确保返回正确
+}

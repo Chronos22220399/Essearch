@@ -8,12 +8,13 @@
 					"build" : ".",
 					"childIndexes" : 
 					[
-						1
+						1,
+						2
 					],
 					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.10"
+						"string" : "3.0.0"
 					},
 					"projectIndex" : 0,
 					"source" : "."
@@ -23,7 +24,7 @@
 					"jsonFile" : "directory-Arachne-Debug-3e2a42b68eefa6d8ddab.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.10"
+						"string" : "3.0.0"
 					},
 					"parentIndex" : 0,
 					"projectIndex" : 1,
@@ -31,6 +32,21 @@
 					"targetIndexes" : 
 					[
 						0
+					]
+				},
+				{
+					"build" : "Hermes",
+					"jsonFile" : "directory-Hermes-Debug-b1a496c19ac21a4136e9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "Hermes",
+					"targetIndexes" : 
+					[
+						1
 					]
 				}
 			],
@@ -40,7 +56,8 @@
 				{
 					"childIndexes" : 
 					[
-						1
+						1,
+						2
 					],
 					"directoryIndexes" : 
 					[
@@ -59,6 +76,18 @@
 					[
 						0
 					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "Hermes",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1
+					]
 				}
 			],
 			"targets" : 
@@ -66,9 +95,16 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "Arachne::@ebd4cde7d96b631c93a2",
-					"jsonFile" : "target-Arachne-Debug-c393492d31015650e5d6.json",
+					"jsonFile" : "target-Arachne-Debug-c4b8672cb773ff139e43.json",
 					"name" : "Arachne",
 					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "Hermes::@bf6f557b49f8ff77f51a",
+					"jsonFile" : "target-Hermes-Debug-23d9e688fa617aeb3f08.json",
+					"name" : "Hermes",
+					"projectIndex" : 2
 				}
 			]
 		}

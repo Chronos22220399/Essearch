@@ -12,24 +12,17 @@
 		[
 			"add_executable",
 			"target_link_libraries",
-			"set_property",
-			"_pkg_create_imp_target",
-			"_pkg_recalculate",
-			"pkg_check_modules",
-			"find_package",
-			"find_dependency",
 			"set_target_properties",
 			"include",
+			"find_package",
+			"target_compile_options",
 			"target_include_directories"
 		],
 		"files" : 
 		[
 			"Arachne/CMakeLists.txt",
-			"/usr/share/cmake/Modules/FindPkgConfig.cmake",
-			"/usr/lib/cmake/httplib/FindBrotli.cmake",
-			"/usr/share/cmake/Modules/CMakeFindDependencyMacro.cmake",
-			"/usr/lib/cmake/httplib/httplibConfig.cmake",
 			"/usr/lib/cmake/httplib/httplibTargets.cmake",
+			"/usr/lib/cmake/httplib/httplibConfig.cmake",
 			"/usr/local/lib/cmake/Sqlpp11/Sqlpp11Targets.cmake",
 			"/usr/local/lib/cmake/Sqlpp11/Sqlpp11Config.cmake"
 		],
@@ -41,195 +34,107 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 33,
-				"parent" : 0
-			},
-			{
-				"command" : 1,
-				"file" : 0,
-				"line" : 35,
-				"parent" : 0
-			},
-			{
-				"command" : 1,
-				"file" : 0,
-				"line" : 36,
-				"parent" : 0
-			},
-			{
-				"command" : 1,
-				"file" : 0,
-				"line" : 37,
-				"parent" : 0
-			},
-			{
-				"command" : 1,
-				"file" : 0,
-				"line" : 38,
-				"parent" : 0
-			},
-			{
-				"command" : 1,
-				"file" : 0,
-				"line" : 39,
-				"parent" : 0
-			},
-			{
-				"command" : 6,
-				"file" : 0,
 				"line" : 26,
 				"parent" : 0
 			},
 			{
-				"file" : 4,
-				"parent" : 7
+				"command" : 1,
+				"file" : 0,
+				"line" : 28,
+				"parent" : 0
 			},
 			{
-				"command" : 7,
-				"file" : 4,
-				"line" : 69,
-				"parent" : 8
-			},
-			{
-				"command" : 6,
-				"file" : 3,
-				"line" : 76,
-				"parent" : 9
-			},
-			{
-				"file" : 2,
-				"parent" : 10
-			},
-			{
-				"command" : 5,
-				"file" : 2,
-				"line" : 83,
-				"parent" : 11
-			},
-			{
-				"command" : 4,
-				"file" : 1,
-				"line" : 881,
-				"parent" : 12
-			},
-			{
-				"command" : 3,
-				"file" : 1,
-				"line" : 365,
-				"parent" : 13
-			},
-			{
-				"command" : 2,
-				"file" : 1,
-				"line" : 346,
-				"parent" : 14
-			},
-			{
-				"command" : 5,
-				"file" : 2,
-				"line" : 83,
-				"parent" : 11
-			},
-			{
-				"command" : 4,
-				"file" : 1,
-				"line" : 881,
-				"parent" : 16
-			},
-			{
-				"command" : 3,
-				"file" : 1,
-				"line" : 365,
-				"parent" : 17
-			},
-			{
-				"command" : 2,
-				"file" : 1,
-				"line" : 346,
-				"parent" : 18
-			},
-			{
-				"command" : 5,
-				"file" : 2,
-				"line" : 83,
-				"parent" : 11
-			},
-			{
-				"command" : 4,
-				"file" : 1,
-				"line" : 881,
-				"parent" : 20
-			},
-			{
-				"command" : 3,
-				"file" : 1,
-				"line" : 365,
-				"parent" : 21
-			},
-			{
-				"command" : 2,
-				"file" : 1,
-				"line" : 346,
-				"parent" : 22
-			},
-			{
-				"command" : 9,
-				"file" : 4,
-				"line" : 88,
-				"parent" : 8
-			},
-			{
-				"file" : 5,
-				"parent" : 24
-			},
-			{
-				"command" : 8,
-				"file" : 5,
-				"line" : 70,
-				"parent" : 25
-			},
-			{
-				"command" : 6,
+				"command" : 1,
 				"file" : 0,
 				"line" : 29,
 				"parent" : 0
 			},
 			{
-				"file" : 7,
-				"parent" : 27
-			},
-			{
-				"command" : 9,
-				"file" : 7,
-				"line" : 49,
-				"parent" : 28
-			},
-			{
-				"file" : 6,
-				"parent" : 29
-			},
-			{
-				"command" : 8,
-				"file" : 6,
-				"line" : 70,
-				"parent" : 30
+				"command" : 1,
+				"file" : 0,
+				"line" : 30,
+				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 47,
+				"line" : 32,
 				"parent" : 0
 			},
 			{
-				"command" : 10,
+				"command" : 4,
+				"file" : 0,
+				"line" : 19,
+				"parent" : 0
+			},
+			{
+				"file" : 2,
+				"parent" : 6
+			},
+			{
+				"command" : 3,
+				"file" : 2,
+				"line" : 88,
+				"parent" : 7
+			},
+			{
+				"file" : 1,
+				"parent" : 8
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 70,
+				"parent" : 9
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 22,
+				"parent" : 0
+			},
+			{
+				"file" : 4,
+				"parent" : 11
+			},
+			{
+				"command" : 3,
+				"file" : 4,
+				"line" : 49,
+				"parent" : 12
+			},
+			{
+				"file" : 3,
+				"parent" : 13
+			},
+			{
+				"command" : 2,
+				"file" : 3,
+				"line" : 70,
+				"parent" : 14
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 43,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
 				"file" : 0,
 				"line" : 41,
 				"parent" : 0
 			},
 			{
-				"command" : 10,
+				"command" : 6,
 				"file" : 0,
-				"line" : 43,
+				"line" : 34,
+				"parent" : 0
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 37,
 				"parent" : 0
 			}
 		]
@@ -241,6 +146,22 @@
 			[
 				{
 					"fragment" : "-g -std=c++20"
+				},
+				{
+					"backtrace" : 16,
+					"fragment" : "-O0"
+				},
+				{
+					"backtrace" : 16,
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 16,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 16,
+					"fragment" : "-pedantic"
 				}
 			],
 			"defines" : 
@@ -262,26 +183,26 @@
 					"define" : "FMT_SHARED"
 				},
 				{
-					"backtrace" : 32,
+					"backtrace" : 17,
 					"define" : "ONLY_C_LOCALE=0"
 				},
 				{
-					"backtrace" : 6,
+					"backtrace" : 5,
 					"define" : "TBB_USE_DEBUG"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 33,
+					"backtrace" : 18,
 					"path" : "/home/Ess/Desktop/Essearch/Arachne/include"
 				},
 				{
-					"backtrace" : 33,
+					"backtrace" : 18,
 					"path" : "/usr/local/include/gq"
 				},
 				{
-					"backtrace" : 34,
+					"backtrace" : 19,
 					"path" : "/home/Ess/Desktop/Essearch/Arachne/datas"
 				}
 			],
@@ -296,11 +217,12 @@
 			},
 			"sourceIndexes" : 
 			[
-				7,
-				8,
 				9,
 				10,
-				11
+				11,
+				12,
+				13,
+				14
 			]
 		}
 	],
@@ -314,7 +236,7 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "",
+				"fragment" : "-rdynamic",
 				"role" : "flags"
 			},
 			{
@@ -323,7 +245,7 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "/usr/lib/libcpp-httplib.so.0.18.6",
+				"fragment" : "/usr/lib/libcpp-httplib.so.0.18.7",
 				"role" : "libraries"
 			},
 			{
@@ -337,57 +259,51 @@
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 5,
-				"fragment" : "/usr/lib/libicuuc.so",
+				"fragment" : "-licuuc",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-licui18n",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-licuio",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 5,
-				"fragment" : "/usr/lib/libicui18n.so",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 5,
-				"fragment" : "/usr/lib/libicuio.so",
-				"role" : "libraries"
-			},
-			{
-				"backtrace" : 6,
 				"fragment" : "/usr/lib/libtbb.so.12.14",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 15,
-				"fragment" : "/usr/lib/libbrotlicommon.so",
+				"fragment" : "-lbrotlicommon",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 19,
-				"fragment" : "/usr/lib/libbrotlienc.so",
+				"fragment" : "-lbrotlienc",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 23,
-				"fragment" : "/usr/lib/libbrotlidec.so",
+				"fragment" : "-lbrotlidec",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 26,
+				"backtrace" : 10,
 				"fragment" : "/usr/lib/libz.so",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 26,
+				"backtrace" : 10,
 				"fragment" : "/usr/lib/libssl.so",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 26,
+				"backtrace" : 10,
 				"fragment" : "/usr/lib/libcrypto.so",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 31,
+				"backtrace" : 15,
 				"fragment" : "/usr/lib/libsqlite3.so",
 				"role" : "libraries"
 			}
@@ -414,19 +330,22 @@
 				4,
 				5,
 				6,
-				12,
-				13
+				7,
+				8,
+				15,
+				16
 			]
 		},
 		{
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				7,
-				8,
 				9,
 				10,
-				11
+				11,
+				12,
+				13,
+				14
 			]
 		}
 	],
@@ -440,6 +359,16 @@
 		{
 			"backtrace" : 1,
 			"path" : "Arachne/include/Arachne/Autils.hpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Arachne/include/Arachne/Include.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Arachne/include/Arachne/Manager.h",
 			"sourceGroupIndex" : 0
 		},
 		{
@@ -466,6 +395,12 @@
 			"backtrace" : 1,
 			"path" : "Arachne/include/Arachne/URLGetter.h",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Arachne/src/Manager.cpp",
+			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 1,
@@ -503,7 +438,7 @@
 			"sourceGroupIndex" : 0
 		},
 		{
-			"backtrace" : 32,
+			"backtrace" : 17,
 			"path" : "/usr/local/include/date/date.h",
 			"sourceGroupIndex" : 0
 		}

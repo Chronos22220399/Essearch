@@ -12,16 +12,9 @@ project(
   LANGUAGES CXX
   VERSION 1.0)
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake; ${CMAKE_MODULE_PATH}")
-
-# 对 gumbo-query 的基本配置
-find_package(SQLite3 REQUIRED)
-if(APPLE)
-  set(gumbo_query_INCLUDE_DIR /usr/local/include)
-  set(gumbo_query_LIB /usr/local/lib/libgumbo_query.dylib)
-else()
-  include(GumboQueryConfig)
-endif()
+# 对 gumbo-query 的基本配置 find_package(SQLite3 REQUIRED) if(APPLE)
+# set(gumbo_query_INCLUDE_DIR /usr/local/include) set(gumbo_query_LIB
+# /usr/local/lib/libgumbo_query.dylib) else() include(GumboQueryConfig) endif()
 
 find_package(httplib REQUIRED)
 find_package(fmt REQUIRED)
@@ -38,10 +31,13 @@ target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 target_link_libraries(${PROJECT_NAME} PRIVATE ${ICU_LIBRARIES})
 target_link_libraries(${PROJECT_NAME} PRIVATE TBB::tbb)
 
-target_include_directories(${PROJECT_NAME} PUBLIC include
-                                                  ${gumbo_query_INCLUDE_DIR})
+target_include_directories(
+  ${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include
+                          ${gumbo_query_INCLUDE_DIR})
 target_include_directories(
   ${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/datas
                           ${CMAKE_CURRENT_LIST_DIR}/include)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sqlpp11::sqlpp11 sqlpp11::sqlite3)
+
+target_compile_options(${PROJECT_NAME} PRIVATE ${COMPILE_OPTIONS})

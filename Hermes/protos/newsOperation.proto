@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+// 添加新闻
+message AddNewsRequest {
+    int32 maxCnt = 1;   // 添加的最大数量
+    string url = 2;     // 起始 url
+}
+
+message AddNewsResponse {
+    int32 addCnt = 1;   // 成功添加的数量
+}
+
+message DelNewsRequest {
+    repeated int32 newId = 1;   // 删除的新闻的 id 列表
+}
+
+message DelNewsResponse {
+    int32 delCnt = 1;   // 删除的新闻的数量
+}
+
+message GetNewsRequest {
+    oneof keyword {
+        int32 newId = 1;
+        string title = 2;
+        string url = 4;
+    }
+}
+
+message News {
+    int32 newId = 1;
+    string title = 2;
+    string content = 3;
+    string author_photor = 4;
+    string url = 10;
+}
+
+// message getNewsResponse {
+
+// }
