@@ -112,7 +112,16 @@ private:
 
 struct URLChecker {
   static bool new_url_is_valid(const std::string &url) {
-    if (url.length() < 8 or !url.starts_with("/info/")) {
+    if (url.length() < 8 || !url.starts_with("/info/")) {
+      LOG("错误的新闻 url");
+      return false;
+    }
+    return true;
+  }
+
+  static bool page_url_is_valid(const std::string &page_url) {
+    if (page_url.length() < 8 || !page_url.starts_with("/xxxw")) {
+      LOG("错误的页面 url");
       return false;
     }
     return true;

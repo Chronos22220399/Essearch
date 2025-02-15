@@ -8,19 +8,29 @@ namespace Arachne {
 class CrawlPolicy {
 protected:
 public:
+  // 爬取网站上所有新闻（尽量）
   virtual new_cnt_type crawl_all_news() = 0;
+  // 爬取某一页面的新闻
+  virtual new_cnt_type crawl_one_page_news(const std::string &page_url) = 0;
+  // 爬取给出的 url 对应的新闻
   virtual new_cnt_type crawl_single_new(const std::string &url);
   virtual ~CrawlPolicy() = default;
 };
 
 class CrawlNormal : public CrawlPolicy {
 public:
+  // 爬取网站上所有新闻（尽量）
   new_cnt_type crawl_all_news() override;
+  // 爬取某一页面的新闻
+  new_cnt_type crawl_one_page_news(const std::string &url) override;
 };
 
 class CrawlParallelTBB : public CrawlPolicy {
 public:
+  // 爬取网站上所有新闻（尽量）
   new_cnt_type crawl_all_news() override;
+  // 爬取某一页面的新闻
+  new_cnt_type crawl_one_page_news(const std::string &url) override;
 };
 
 class Manager {

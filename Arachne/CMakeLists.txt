@@ -18,7 +18,6 @@ project(
 
 find_package(httplib REQUIRED)
 find_package(fmt REQUIRED)
-find_package(httplib REQUIRED)
 find_package(Sqlpp11 REQUIRED)
 find_package(ICU REQUIRED COMPONENTS uc i18n io)
 find_package(TBB REQUIRED)

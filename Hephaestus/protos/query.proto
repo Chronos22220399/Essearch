@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+enum QueryMode {
+    Normal = 0;
+    Advanced = 1;
+}
+
+message QueryRequest {
+    QueryMode queryMode = 1;
+    string queryContent = 2;
+}
+
+message QueryResponse {
+    repeated uint32 docId = 1;
+}
+
+service QueryProcessor {
+    rpc QueryDocId(QueryRequest) returns (QueryResponse);
+}

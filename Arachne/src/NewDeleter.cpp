@@ -42,7 +42,7 @@ NewDeleter::NewDelImpl::delete_new_generic(const Value &value) const {
       return false;
     }
     News::New nw{};
-    Column column_ptr;
+    Column column_ptr{};
 
     conn.start_transaction();
     conn(remove_from(nw).where(nw.*column_ptr == value));
@@ -73,7 +73,6 @@ new_cnt_type NewDeleter::NewDelImpl::delete_all_news() const {
     Autils::ScopedTranscation trans(conn_ptr);
 
     // 删除全部
-    News::New nw{};
     (*conn_ptr).execute("DELETE FROM New;");
     (*conn_ptr).execute("DELETE FROM sqlite_sequence WHERE name='New';");
     trans.commit();

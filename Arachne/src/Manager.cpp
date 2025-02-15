@@ -15,6 +15,7 @@
 
 namespace Arachne {
 
+// TODO: 搜索前先检测 url 是否被搜索过
 new_cnt_type CrawlPolicy::crawl_single_new(const std::string &url) {
   auto pool_ptr = Autils::get_conn_pool_ptr();
   NewGetter getter{};
@@ -35,6 +36,19 @@ new_cnt_type CrawlPolicy::crawl_single_new(const std::string &url) {
     return 1;
   }
   return 0;
+}
+
+new_cnt_type CrawlNormal::crawl_one_page_news(const std::string &page_url) {
+  auto pool_ptr = Autils::get_conn_pool_ptr();
+  auto new_cnt{0};
+  NewGetter getter{};
+  NewParser parser{};
+  NewSaver saver{pool_ptr};
+
+  URLGetter urlGetter{};
+  std::vector<std::string> urls(12);
+
+  return new_cnt;
 }
 
 new_cnt_type CrawlNormal::crawl_all_news() {
@@ -104,8 +118,17 @@ new_cnt_type CrawlParallelTBB::crawl_all_news() {
   return new_cnt;
 }
 
+new_cnt_type
+CrawlParallelTBB::crawl_one_page_news(const std::string &page_url) {
+  auto new_cnt{0};
+  NewGetter getter{};
+  NewParser parser{};
+
+  return new_cnt;
+}
+
 Manager::Manager(conn_pool_ptr pool_ptr)
-    : pool_ptr(pool_ptr), crawl_policy(nullptr) {};
+    : crawl_policy(nullptr), pool_ptr(pool_ptr) {};
 
 void Manager::set_crawl_policy(crawl_policy_ptr crawl_policy_ptr) {
   this->crawl_policy = std::move(crawl_policy_ptr);

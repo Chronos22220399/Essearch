@@ -35,4 +35,4 @@ endif()
 include(FindSodium)
 
 add_subdirectory(Arachne)
-add_subdirectory(Hermes)
+# add_subdirectory(Hermes) add_subdirectory(Hephaestus)
