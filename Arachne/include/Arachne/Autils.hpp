@@ -19,11 +19,12 @@ namespace Autils {
 
 #define SPFLOG_ACTIVE_LEVEL SPDLOG_LOGGER_TRACE
 
+// 统一使用 LOG 进行打印，测试阶段输出在命令行，正式部署运行阶段采用日志
 // #define LOG(...) fmt::println("{}", __VA_ARGS__)
 #define LOG(...)                                                               \
   fmt::println("[{}:{}]: {}", __FUNCTION__, __LINE__, fmt::format(__VA_ARGS__))
 
-// 检查出 nullptr 则直接退出
+// 检查指针是否为 nullptr ,是则直接退出
 #define CHECK_INIT_AND_LOG(ptr, ...)                                           \
   {                                                                            \
     if (ptr == nullptr) {                                                      \
@@ -61,6 +62,7 @@ inline void check_http_result(const httplib::Result &result,
   }
 }
 
+// 获取连接池的指针
 inline std::shared_ptr<sqlpp::sqlite3::connection_pool> get_conn_pool_ptr() {
   using namespace sqlpp::sqlite3;
   connection_config config;
@@ -74,42 +76,18 @@ inline std::shared_ptr<sqlpp::sqlite3::connection_pool> get_conn_pool_ptr() {
   return pool;
 }
 
-inline std::string strip(const std::string &str) {
-  icu::UnicodeString ustr = icu::UnicodeString::fromUTF8(str);
-  ustr.trim();
-  auto result = std::string();
-  ustr.toUTF8String(result);
-  return result;
-}
-
-class ScopedTranscation {
-  using pooled_conn_ptr = std::shared_ptr<
-      sqlpp::pooled_connection<sqlpp::sqlite3::connection_base>>;
-
-public:
-  ScopedTranscation(pooled_conn_ptr conn_ptr_)
-      : conn_ptr_(conn_ptr_), commited_(false) {
-    conn_ptr_->start_transaction();
-  };
-
-  void commit() {
-    if (!commited_) {
-      conn_ptr_->commit_transaction();
-      commited_ = true;
-    }
+// 对标准库中 string 的扩展
+struct ExtensionString {
+  static std::string strip(const std::string &str) {
+    icu::UnicodeString ustr = icu::UnicodeString::fromUTF8(str);
+    ustr.trim();
+    auto result = std::string();
+    ustr.toUTF8String(result);
+    return result;
   }
-
-  ~ScopedTranscation() {
-    if (!commited_ && conn_ptr_->is_transaction_active()) {
-      conn_ptr_->rollback_transaction(true);
-    }
-  }
-
-private:
-  pooled_conn_ptr conn_ptr_;
-  bool commited_;
 };
 
+// URL 检查器
 struct URLChecker {
   static bool new_url_is_valid(const std::string &url) {
     if (url.length() < 8 || !url.starts_with("/info/")) {
@@ -126,6 +104,63 @@ struct URLChecker {
     }
     return true;
   }
+};
+
+// 对 db 使用时的公共逻辑进行提取
+// struct DBHelper {
+//   using conn_base_type = sqlpp::sqlite3::connection_base;
+//   using conn_pool_ptr = std::shared_ptr<sqlpp::sqlite3::connection_pool>;
+//   DBHelper(conn_pool_ptr pool_ptr) : conn_base(pool_ptr->get()) {}
+//
+//   template <typename Callable> auto with_transacation(Callable &&operator) {
+//     try {
+//       // Autils::ScopedTranscation trans{};
+//       // return deleter(std::forward<Args>(args)...);
+//       // trans.commit();
+//     } catch (const sqlpp::exception &e) {
+//       LOG("删除时出现数据库错误: {}", e.what());
+//     } catch (const std::exception &e) {
+//       LOG("删除时出现系统错误: {}", e.what());
+//     }
+//     return 0;
+//   }
+//
+// private:
+//   conn_base_type conn_base;
+// };
+
+// RAII 的事务
+class ScopedTranscation {
+  using pooled_conn_type = sqlpp::sqlite3::pooled_connection;
+  using pooled_conn_ptr_type = std::shared_ptr<pooled_conn_type>;
+
+public:
+  ScopedTranscation(pooled_conn_ptr_type pooled_conn_ptr)
+      : commited_(false), pooled_conn_ptr(pooled_conn_ptr) {
+    pooled_conn_ptr->start_transaction();
+  };
+
+  template <typename Func, typename... Args>
+  auto run(Func &&func, Args &&...args) {
+    return func(std::forward<Args>(args)...);
+  }
+
+  void commit() {
+    if (!commited_) {
+      pooled_conn_ptr->commit_transaction();
+      commited_ = true;
+    }
+  }
+
+  ~ScopedTranscation() {
+    if (!commited_ && pooled_conn_ptr->is_transaction_active()) {
+      pooled_conn_ptr->rollback_transaction(true);
+    }
+  }
+
+private:
+  bool commited_;
+  pooled_conn_ptr_type pooled_conn_ptr;
 };
 
 } // namespace Autils

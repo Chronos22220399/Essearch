@@ -8,26 +8,22 @@ NewDeleter::NewDelImpl::NewDelImpl(
     std::shared_ptr<sqlpp::sqlite3::connection_pool> pool)
     : pool(pool) {}
 
-new_cnt_type
-NewDeleter::NewDelImpl::delete_new_generic_impl(std::function<void()> deleter) {
-  auto conn_ptr = std::make_shared<
-      sqlpp::pooled_connection<sqlpp::sqlite3::connection_base>>(pool->get());
+template <typename Deleter, typename... Args>
+new_cnt_type NewDeleter::NewDelImpl::delete_new_generic_impl(Deleter &&deleter,
+                                                             Args &&...args) {
+  auto pooled_conn = pool->get();
   try {
-    if (conn_ptr->is_connected()) {
+    if (pooled_conn.is_connected()) {
       LOG("{}", "数据库未连接");
       return 0;
     }
-    Autils::ScopedTranscation trans{conn_ptr};
-    deleter();
-    trans.commit();
-    return 1;
+    // Autils::ScopedTranscation trans{std::move(pooled_conn)};
+    return deleter(std::forward<Args>(args)...);
+    // trans.commit();
   } catch (const sqlpp::exception &e) {
     LOG("删除时出现数据库错误: {}", e.what());
   } catch (const std::exception &e) {
     LOG("删除时出现系统错误: {}", e.what());
-    // if (conn.is_connected()) {
-    //   conn.rollback_transaction(false);
-    // }
   }
   return 0;
 }
@@ -53,9 +49,6 @@ NewDeleter::NewDelImpl::delete_new_generic(const Value &value) const {
     return 0;
   } catch (const std::exception &e) {
     LOG("删除时出现系统错误: {}", e.what());
-    // if (conn.is_connected()) {
-    //   conn.rollback_transaction(false);
-    // }
     return 0;
   }
 }
@@ -68,14 +61,16 @@ NewDeleter::NewDelImpl::delete_new_generic_has(const std::string &value) {
 // TODO: 后续可以将返回类型从 void 改为 size_t (size_type)
 new_cnt_type NewDeleter::NewDelImpl::delete_all_news() const {
   auto conn = pool->get();
-  auto conn_ptr = std::make_shared<decltype(conn)>(std::move(conn));
+  // auto conn_ptr = std::make_shared<decltype(conn)>(std::move(conn));
+  std::shared_ptr<sqlpp::sqlite3::pooled_connection> conn_ptr =
+      std::make_shared<decltype(conn)>(std::move(conn));
   try {
-    Autils::ScopedTranscation trans(conn_ptr);
+    // Autils::ScopedTranscation trans(std::move(conn));
 
     // 删除全部
     (*conn_ptr).execute("DELETE FROM New;");
     (*conn_ptr).execute("DELETE FROM sqlite_sequence WHERE name='New';");
-    trans.commit();
+    // trans.commit();
   } catch (const sqlpp::exception &e) {
     LOG("删除时出现数据库错误: {}", e.what());
   } catch (const std::exception &e) {

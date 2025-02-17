@@ -11,7 +11,8 @@ private:
   class NewDelImpl {
 
   private:
-    new_cnt_type delete_new_generic_impl(std::function<void()> deleter);
+    template <typename Deleter, typename... Args>
+    new_cnt_type delete_new_generic_impl(Deleter &&deleter, Args &&...args);
 
   public:
     NewDelImpl(std::shared_ptr<sqlpp::sqlite3::connection_pool> pool);

@@ -5,7 +5,7 @@ namespace Arachne {
 using get_result = std::tuple<std::string, size_t>;
 
 std::string NewParser::get_title() {
-  return Autils::strip(doc.find("h1.te_c").nodeAt(0).text());
+  return Autils::ExtensionString::strip(doc.find("h1.te_c").nodeAt(0).text());
 }
 
 get_result NewParser::get_info(const std::string &info,
@@ -14,7 +14,7 @@ get_result NewParser::get_info(const std::string &info,
   size_t begin = info.find(search_content, end) + 3;
   size_t c_end = info.find(" ", begin);
   auto checker = info.substr(begin, c_end - begin);
-  return {Autils::strip(checker), c_end};
+  return {Autils::ExtensionString::strip(checker), c_end};
 }
 
 std::string NewParser::get_content() {
@@ -32,7 +32,7 @@ std::string NewParser::get_content() {
       content_items += (i == 0 ? "" : "\r\n") + node.text();
     }
   }
-  return Autils::strip(content_items);
+  return Autils::ExtensionString::strip(content_items);
 }
 
 std::string NewParser::get_editor() {
@@ -40,14 +40,15 @@ std::string NewParser::get_editor() {
   size_t begin = editor.find("：") + 3;
   size_t end = editor.find(" ", begin);
   editor = editor.substr(begin, end - begin);
-  return Autils::strip(editor);
+  return Autils::ExtensionString::strip(editor);
 }
 
 NewParser::New NewParser::parse(std::string html_body, const std::string &url) {
   doc.parse(html_body);
   auto title = get_title();
   fmt::println("{}", title);
-  auto new_info = Autils::strip(doc.find("div.info.te_c div").nodeAt(0).text());
+  auto new_info = Autils::ExtensionString::strip(
+      doc.find("div.info.te_c div").nodeAt(0).text());
 
   // 获取作者/摄影
   auto author_photor = get_info(new_info, "：", 0);
