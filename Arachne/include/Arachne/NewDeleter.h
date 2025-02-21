@@ -8,20 +8,13 @@ namespace Arachne {
 
 class NewDeleter {
 private:
-  class NewDelImpl {
-
-  private:
-    template <typename Deleter, typename ConnPtr>
-    new_cnt_type delete_new_generic_impl(Deleter &&deleter, ConnPtr conn_ptr);
+  class NewDelImpl : public Autils::DBHelper {
 
   public:
-    using pooled_conn_type = sqlpp::sqlite3::pooled_connection;
-    using pooled_conn_ptr_type = std::shared_ptr<pooled_conn_type>;
-
     NewDelImpl(std::shared_ptr<sqlpp::sqlite3::connection_pool> pool);
 
     template <typename Column, typename Value>
-    new_cnt_type delete_new_generic(const Value &value) const;
+    new_cnt_type delete_new_generic(Value &&value) const;
 
     new_cnt_type delete_new_generic_has(const std::string &value);
 

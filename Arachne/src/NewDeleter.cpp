@@ -1,7 +1,7 @@
 #include <Arachne/Autils.hpp>
 #include <Arachne/NewDeleter.h>
-// #include <sqlpp11/sqlite3/sqlite3.h>
-// #include <sqlpp11/sqlpp11.h>
+#include <sqlpp11/sqlite3/sqlite3.h>
+#include <sqlpp11/sqlpp11.h>
 
 namespace Arachne {
 
@@ -9,44 +9,18 @@ NewDeleter::NewDelImpl::NewDelImpl(
     std::shared_ptr<sqlpp::sqlite3::connection_pool> pool)
     : pool(pool) {}
 
-// template <typename Deleter>
-// new_cnt_type
-// NewDeleter::NewDelImpl::delete_new_generic_impl(Deleter &&deleter) {
-//   auto pooled_conn_ptr =
-//       std::make_shared<sqlpp::sqlite3::pooled_connection>(pool->get());
-//   Autils::DBHelper helper{pooled_conn_ptr};
-//   return helper.run(deleter());
-// }
-
-template <typename Deleter>
-new_cnt_type
-NewDeleter::NewDelImpl::delete_new_generic_impl(Deleter &&deleter) {
+template <typename Column, typename Value>
+new_cnt_type NewDeleter::NewDelImpl::delete_new_generic(Value &&value) const {
   auto pooled_conn_ptr =
       std::make_shared<sqlpp::sqlite3::pooled_connection>(pool->get());
-  Autils::DBHelper helper{pooled_conn_ptr};
-  helper.execute(std::forward<Deleter>(deleter), pooled_conn_ptr);
-  // helper.run([pooled_conn_ptr]() {
-  //   News::New nw{};
-  //   (*pooled_conn_ptr)(remove_from(nw).where(nw.newId == 1));
-  //   return 1;
-  // });
-  return 0;
-}
-
-template <typename Column, typename Value>
-new_cnt_type
-NewDeleter::NewDelImpl::delete_new_generic(const Value &value) const {
-  pooled_conn_ptr_type pooled_conn_ptr =
-      std::make_shared<sqlpp::sqlite3::pooled_connection>(pool->get());
-  auto func = [value, pooled_conn_ptr]() {
+  auto func = [](pooled_conn_ptr_type conn_ptr, Value &&v) {
     News::New nw{};
-    Column column_ptr{};
-    return (*pooled_conn_ptr)(remove_from(nw).where(nw.*column_ptr == value));
+    constexpr Column column_ptr{};
+    (*conn_ptr)(remove_from(nw).where(nw.*column_ptr == v));
+    return 1;
   };
-  Autils::DBHelper helper{pooled_conn_ptr};
-  helper.execute(pooled_conn_ptr, func);
-  // return delete_new_generic_impl<decltype(deleter), void>(deleter);
-  // return conn(remove_from(nw).where(nw.*column_ptr == value));
+  Autils::DBHelper helper{};
+  return helper.execute(pool, func, std::forward<Value>(value));
 }
 
 new_cnt_type

@@ -142,12 +142,12 @@ private:
 
 // 对 db 使用时的公共逻辑进行提取
 class DBHelper {
+public:
   using conn_pool_type = sqlpp::sqlite3::connection_pool;
   using conn_pool_ptr_type = std::shared_ptr<conn_pool_type>;
   using pooled_conn_type = sqlpp::sqlite3::pooled_connection;
   using pooled_conn_ptr_type = std::shared_ptr<pooled_conn_type>;
 
-public:
   template <typename DBOperation, typename... Args>
   auto execute(conn_pool_ptr_type conn_pool_ptr, DBOperation &&operation,
                Args &&...args) {
@@ -164,13 +164,13 @@ public:
       return ret;
     } catch (const sqlpp::exception &e) {
       LOG("删除时出现数据库错误: {}", e.what());
+      return 0;
     } catch (const std::exception &e) {
       LOG("删除时出现系统错误: {}", e.what());
+      return 0;
     }
     return 0;
   }
-
-private:
 };
 
 } // namespace Autils
