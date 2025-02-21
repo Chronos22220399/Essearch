@@ -11,10 +11,13 @@ private:
   class NewDelImpl {
 
   private:
-    template <typename Deleter, typename... Args>
-    new_cnt_type delete_new_generic_impl(Deleter &&deleter, Args &&...args);
+    template <typename Deleter, typename ConnPtr>
+    new_cnt_type delete_new_generic_impl(Deleter &&deleter, ConnPtr conn_ptr);
 
   public:
+    using pooled_conn_type = sqlpp::sqlite3::pooled_connection;
+    using pooled_conn_ptr_type = std::shared_ptr<pooled_conn_type>;
+
     NewDelImpl(std::shared_ptr<sqlpp::sqlite3::connection_pool> pool);
 
     template <typename Column, typename Value>

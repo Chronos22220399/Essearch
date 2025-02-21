@@ -5,59 +5,45 @@
 
 using namespace Arachne::Autils;
 
-class DBHelper {
-  using pooled_conn_type = sqlpp::sqlite3::pooled_connection;
-  using pooled_conn_ptr_type = std::shared_ptr<pooled_conn_type>;
+// size_t
+// delete_new_generic_impl(std::shared_ptr<sqlpp::sqlite3::connection_pool>
+// pool) {
+//   DBHelper helper{};
+//   auto func = [](decltype(pooled_conn_ptr) p_c_ptr, int value) {
+//     News::New nw{};
+//     (*p_c_ptr)(remove_from(nw).where(nw.newId == value));
+//     return 1;
+//   };
+//   helper.execute(pool, func, 1);
+//   return 0;
+// }
 
-public:
-  DBHelper(pooled_conn_ptr_type pooled_conn_ptr)
-      : pooled_conn_ptr(pooled_conn_ptr) {}
-
-  template <typename DBOperation, typename... Args>
-  auto run(DBOperation &&operation, Args &&...args) {
-    try {
-      if (!pooled_conn_ptr->is_connected()) {
-        LOG("{}", "数据库未连接");
-        return 0;
-      }
-      ScopedTranscation trans{pooled_conn_ptr};
-      auto ret = operation(std::forward<Args>(args)...);
-      trans.commit();
-      return ret;
-    } catch (const sqlpp::exception &e) {
-      LOG("删除时出现数据库错误: {}", e.what());
-    } catch (const std::exception &e) {
-      LOG("删除时出现系统错误: {}", e.what());
-    }
-    return 0;
-  }
-
-private:
-  pooled_conn_ptr_type pooled_conn_ptr;
-};
-
-size_t
-delete_new_generic_impl(std::shared_ptr<sqlpp::sqlite3::connection_pool> pool) {
-  auto pooled_conn_ptr =
-      std::make_shared<sqlpp::sqlite3::pooled_connection>(pool->get());
-  DBHelper helper{pooled_conn_ptr};
-  helper.run([pooled_conn_ptr]() {
-    News::New nw{};
-    (*pooled_conn_ptr)(remove_from(nw).where(nw.newId == 1));
-    return 1;
-  });
-  return 0;
-}
+// template <typename Column, typename Value>
+// new_cnt_type
+// NewDeleter::NewDelImpl::delete_new_generic(const Value &value) const {
+//   pooled_conn_ptr_type pooled_conn_ptr =
+//       std::make_shared<sqlpp::sqlite3::pooled_connection>(pool->get());
+//   auto func = [](pooled_conn_ptr_type &pooled_conn_ptr, const Value &value) {
+//     News::New nw{};
+//     Column column_ptr{};
+//     return (*pooled_conn_ptr)(remove_from(nw).where(nw.*column_ptr ==
+//     value));
+//   };
+//   Autils::DBHelper helper{pooled_conn_ptr};
+//   helper.execute(pooled_conn_ptr, func, value);
+//   // return delete_new_generic_impl<decltype(deleter), void>(deleter);
+//   // return conn(remove_from(nw).where(nw.*column_ptr == value));
+// }
 
 int main() {
   using namespace Arachne::Autils;
-  auto pool = get_conn_pool_ptr();
-  delete_new_generic_impl(pool);
+  // auto pool = get_conn_pool_ptr();
+  // delete_new_generic_impl(pool);
 
-  // auto conn_ptr = get_conn_pool_ptr();
-  // Arachne::Manager manager(conn_ptr);
-  // manager.delete_all_news();
-  // manager.set_crawl_policy();
+  auto conn_ptr = get_conn_pool_ptr();
+  Arachne::Manager manager(conn_ptr);
+  manager.delete_all_news();
+  manager.set_crawl_policy();
   // manager.crawl_single_new("/info/1011/20322.htm");
 
   return 0;

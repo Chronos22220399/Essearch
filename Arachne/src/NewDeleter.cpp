@@ -1,3 +1,4 @@
+#include <Arachne/Autils.hpp>
 #include <Arachne/NewDeleter.h>
 // #include <sqlpp11/sqlite3/sqlite3.h>
 // #include <sqlpp11/sqlpp11.h>
@@ -8,49 +9,44 @@ NewDeleter::NewDelImpl::NewDelImpl(
     std::shared_ptr<sqlpp::sqlite3::connection_pool> pool)
     : pool(pool) {}
 
-template <typename Deleter, typename... Args>
-new_cnt_type NewDeleter::NewDelImpl::delete_new_generic_impl(Deleter &&deleter,
-                                                             Args &&...args) {
-  auto pooled_conn = pool->get();
-  try {
-    if (pooled_conn.is_connected()) {
-      LOG("{}", "数据库未连接");
-      return 0;
-    }
-    // Autils::ScopedTranscation trans{std::move(pooled_conn)};
-    return deleter(std::forward<Args>(args)...);
-    // trans.commit();
-  } catch (const sqlpp::exception &e) {
-    LOG("删除时出现数据库错误: {}", e.what());
-  } catch (const std::exception &e) {
-    LOG("删除时出现系统错误: {}", e.what());
-  }
+// template <typename Deleter>
+// new_cnt_type
+// NewDeleter::NewDelImpl::delete_new_generic_impl(Deleter &&deleter) {
+//   auto pooled_conn_ptr =
+//       std::make_shared<sqlpp::sqlite3::pooled_connection>(pool->get());
+//   Autils::DBHelper helper{pooled_conn_ptr};
+//   return helper.run(deleter());
+// }
+
+template <typename Deleter>
+new_cnt_type
+NewDeleter::NewDelImpl::delete_new_generic_impl(Deleter &&deleter) {
+  auto pooled_conn_ptr =
+      std::make_shared<sqlpp::sqlite3::pooled_connection>(pool->get());
+  Autils::DBHelper helper{pooled_conn_ptr};
+  helper.execute(std::forward<Deleter>(deleter), pooled_conn_ptr);
+  // helper.run([pooled_conn_ptr]() {
+  //   News::New nw{};
+  //   (*pooled_conn_ptr)(remove_from(nw).where(nw.newId == 1));
+  //   return 1;
+  // });
   return 0;
 }
 
 template <typename Column, typename Value>
 new_cnt_type
 NewDeleter::NewDelImpl::delete_new_generic(const Value &value) const {
-  auto conn = pool->get();
-  try {
-    if (!conn.is_connected()) {
-      LOG("{}", "数据库未连接");
-      return false;
-    }
+  pooled_conn_ptr_type pooled_conn_ptr =
+      std::make_shared<sqlpp::sqlite3::pooled_connection>(pool->get());
+  auto func = [value, pooled_conn_ptr]() {
     News::New nw{};
     Column column_ptr{};
-
-    conn.start_transaction();
-    conn(remove_from(nw).where(nw.*column_ptr == value));
-    conn.commit_transaction();
-    return 1;
-  } catch (const sqlpp::exception &e) {
-    LOG("删除时出现数据库错误: {}", e.what());
-    return 0;
-  } catch (const std::exception &e) {
-    LOG("删除时出现系统错误: {}", e.what());
-    return 0;
-  }
+    return (*pooled_conn_ptr)(remove_from(nw).where(nw.*column_ptr == value));
+  };
+  Autils::DBHelper helper{pooled_conn_ptr};
+  helper.execute(pooled_conn_ptr, func);
+  // return delete_new_generic_impl<decltype(deleter), void>(deleter);
+  // return conn(remove_from(nw).where(nw.*column_ptr == value));
 }
 
 new_cnt_type
@@ -62,15 +58,15 @@ NewDeleter::NewDelImpl::delete_new_generic_has(const std::string &value) {
 new_cnt_type NewDeleter::NewDelImpl::delete_all_news() const {
   auto conn = pool->get();
   // auto conn_ptr = std::make_shared<decltype(conn)>(std::move(conn));
-  std::shared_ptr<sqlpp::sqlite3::pooled_connection> conn_ptr =
+  pooled_conn_ptr_type conn_ptr =
       std::make_shared<decltype(conn)>(std::move(conn));
   try {
-    // Autils::ScopedTranscation trans(std::move(conn));
+    Autils::ScopedTranscation trans(std::move(conn_ptr));
 
     // 删除全部
     (*conn_ptr).execute("DELETE FROM New;");
     (*conn_ptr).execute("DELETE FROM sqlite_sequence WHERE name='New';");
-    // trans.commit();
+    trans.commit();
   } catch (const sqlpp::exception &e) {
     LOG("删除时出现数据库错误: {}", e.what());
   } catch (const std::exception &e) {

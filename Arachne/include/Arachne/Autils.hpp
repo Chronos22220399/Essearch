@@ -106,29 +106,6 @@ struct URLChecker {
   }
 };
 
-// 对 db 使用时的公共逻辑进行提取
-// struct DBHelper {
-//   using conn_base_type = sqlpp::sqlite3::connection_base;
-//   using conn_pool_ptr = std::shared_ptr<sqlpp::sqlite3::connection_pool>;
-//   DBHelper(conn_pool_ptr pool_ptr) : conn_base(pool_ptr->get()) {}
-//
-//   template <typename Callable> auto with_transacation(Callable &&operator) {
-//     try {
-//       // Autils::ScopedTranscation trans{};
-//       // return deleter(std::forward<Args>(args)...);
-//       // trans.commit();
-//     } catch (const sqlpp::exception &e) {
-//       LOG("删除时出现数据库错误: {}", e.what());
-//     } catch (const std::exception &e) {
-//       LOG("删除时出现系统错误: {}", e.what());
-//     }
-//     return 0;
-//   }
-//
-// private:
-//   conn_base_type conn_base;
-// };
-
 // RAII 的事务
 class ScopedTranscation {
   using pooled_conn_type = sqlpp::sqlite3::pooled_connection;
@@ -161,6 +138,39 @@ public:
 private:
   bool commited_;
   pooled_conn_ptr_type pooled_conn_ptr;
+};
+
+// 对 db 使用时的公共逻辑进行提取
+class DBHelper {
+  using conn_pool_type = sqlpp::sqlite3::connection_pool;
+  using conn_pool_ptr_type = std::shared_ptr<conn_pool_type>;
+  using pooled_conn_type = sqlpp::sqlite3::pooled_connection;
+  using pooled_conn_ptr_type = std::shared_ptr<pooled_conn_type>;
+
+public:
+  template <typename DBOperation, typename... Args>
+  auto execute(conn_pool_ptr_type conn_pool_ptr, DBOperation &&operation,
+               Args &&...args) {
+    pooled_conn_ptr_type pooled_conn_ptr =
+        std::make_shared<pooled_conn_type>(conn_pool_ptr->get());
+    try {
+      if (!pooled_conn_ptr->is_connected()) {
+        LOG("{}", "数据库未连接");
+        return 0;
+      }
+      ScopedTranscation trans{pooled_conn_ptr};
+      auto ret = operation(pooled_conn_ptr, std::forward<Args>(args)...);
+      trans.commit();
+      return ret;
+    } catch (const sqlpp::exception &e) {
+      LOG("删除时出现数据库错误: {}", e.what());
+    } catch (const std::exception &e) {
+      LOG("删除时出现系统错误: {}", e.what());
+    }
+    return 0;
+  }
+
+private:
 };
 
 } // namespace Autils
